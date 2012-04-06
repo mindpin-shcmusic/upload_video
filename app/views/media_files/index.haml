@@ -1,0 +1,7 @@
+=link_to "上传","/media_files/new"
+-MediaFile.all.each do |media_file|
+  %div
+    =media_file.id
+    =link_to "详情","/media_files/#{media_file.id}"
+
+		

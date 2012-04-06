@@ -1,0 +1,7 @@
+-if @media_file.is_video?
+  %div 这是一个视频资源
+  %div FLV视频状态 #{@media_file.video_encode_status}
+  -if @media_file.video_encode_status.blank? || @media_file.video_encode_status == MediaFile::FAILURE
+    =link_to "重新生成 FLV视频","/media_files/#{@media_file.id}/into_the_encode_queue",:method=>:put
+  -if @media_file.video_encode_status == MediaFile::SUCCESS
+    =link_to "在线观看",@media_file.flv_url,:target=>"_blank"
