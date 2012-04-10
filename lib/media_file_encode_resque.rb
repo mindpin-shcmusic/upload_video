@@ -15,20 +15,8 @@ class MediaFileEncodeResque
     
     origin_path = media_file.file.path
     flv_path = media_file.flv_path
+    VideoUtil.encode_to_flv(origin_path,flv_path)
     
-    info = VideoInfo.get_info(origin_path)
-    fps = info[:video][:fps]
-    size = info[:video][:size]
-    video_bitrate = info[:video][:bitrate].to_i*1000
-    audio_bitrate = info[:audio][:bitrate]
-    
-    encode_command = "ffmpeg -i #{origin_path} -ar 44100 -ab #{audio_bitrate}   -b:v #{video_bitrate} -s #{size} -r #{fps} -y #{flv_path}" 
-    
-    `#{encode_command}`
-    `yamdi -i #{flv_path} -o #{flv_path}.tmp`
-    `rm #{flv_path}`
-    `mv #{flv_path}.tmp #{flv_path}`
-    p encode_command
     if File.exists?(flv_path)
       media_file.video_encode_status = MediaFile::SUCCESS
     else
